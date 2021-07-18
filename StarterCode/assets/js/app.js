@@ -1,4 +1,4 @@
-// @TODO: YOUR CODE HERE!
+// Set up the chart
 var svgWidth = 960;
 var svgHeight = 500;
 
@@ -12,6 +12,7 @@ var margin = {
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
+// Create svg wrapper
 var svg = d3.select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
@@ -20,9 +21,26 @@ var svg = d3.select("#scatter")
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-d3.csv("data.csv").then(function (statedata) {
-
-})
-
-
-
+  d3.csv("assets/data/data.csv").then(function(CensusData) {
+    CensusData.forEach(function(data) {
+      data.age = +data.age;
+      data.smokes = +data.smokes;
+    });
+  
+    // Create the scales for the chart 
+    const xScale = d3.scaleLinear()
+      .domain(d3.extent(CensusData, d => d.age))
+      .range([0, width])
+  
+    const yScale = d3.scaleLinear()
+      .domain([6,d3.max(CensusData, d => d.smokes)])
+      .range([height, 0])
+    
+    // Set up the axis
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale);
+  
+  
+  // Append to chartGroup
+    chartGroup.append("g").attr("transform", `translate(0, ${height})`).call(xAxis);
+    chartGroup.append("g").call(yAxis);
