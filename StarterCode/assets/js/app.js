@@ -1,5 +1,5 @@
 // Set up the chart
-var svgWidth = 960;
+var svgWidth = 860;
 var svgHeight = 500;
 
 var margin = {
@@ -29,11 +29,11 @@ var chartGroup = svg.append("g")
   
     // Create the scales for the chart 
     const xScale = d3.scaleLinear()
-      .domain(d3.extent(CensusData, d => d.age))
+      .domain(d3.extent(CensusData, d => d.obesity))
       .range([0, width])
   
     const yScale = d3.scaleLinear()
-      .domain([6,d3.max(CensusData, d => d.smokes)])
+      .domain([1,26])
       .range([height, 0])
     
     // Set up the axis
@@ -44,3 +44,34 @@ var chartGroup = svg.append("g")
   // Append to chartGroup
     chartGroup.append("g").attr("transform", `translate(0, ${height})`).call(xAxis);
     chartGroup.append("g").call(yAxis);
+
+  // Add circles    
+    var circlesGroup = chartGroup.selectAll("circle")
+    .data(CensusData)
+    .enter()
+    .append("circle")
+    .attr("cx", d => xScale(d.obesity))
+    .attr("cy", d => yScale(d.healthcare))
+    .attr("r", "14")
+    .attr("fill", "green")
+    .attr("opacity", ".8");  
+
+  // Add state names
+    chartGroup.append("g")
+    .selectAll('text')
+    .data(CensusData)
+    .enter()
+    .append("text")
+    .text(d=>d.abbr)
+    .attr("x",d=>xScale(d.obesity))
+    .attr("y",d=>yScale(d.healthcare))
+    .classed(".stateText", true)
+    .attr("font-size", "10px")
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "central")
+    .attr("fill", "white");
+
+
+
+  })
+
