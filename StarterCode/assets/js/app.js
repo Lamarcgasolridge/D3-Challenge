@@ -23,8 +23,8 @@ var chartGroup = svg.append("g")
 
   d3.csv("assets/data/data.csv").then(function(CensusData) {
     CensusData.forEach(function(data) {
-      data.age = +data.age;
-      data.smokes = +data.smokes;
+      data.healthcare = +data.healthcare;
+      data.obesity = +data.obesity;
     });
   
     // Create the scales for the chart 
@@ -71,7 +71,18 @@ var chartGroup = svg.append("g")
     .attr("alignment-baseline", "central")
     .attr("fill", "white");
 
+  // Add axis labels
+  chartGroup.append("text")
+    .text("People without Healthcare (%)")
+    .attr("transform", "rotate(-90)")
+    .attr("x",-300)
+    .attr("y", -30)
+    .style("font-weight", "bold");
 
-
+    chartGroup.append("text")
+    .text("Obesity Rate")
+    .attr("x", width/2.2)
+    .attr("y", height + 36)
+    .style("font-weight", "bold");
   })
 
