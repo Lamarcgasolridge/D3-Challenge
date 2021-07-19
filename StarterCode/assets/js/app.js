@@ -33,7 +33,7 @@ var chartGroup = svg.append("g")
       .range([0, width])
   
     const yScale = d3.scaleLinear()
-      .domain([1,26])
+      .domain(d3.extent(CensusData, d => d.healthcare))
       .range([height, 0])
     
     // Set up the axis
@@ -80,7 +80,7 @@ var chartGroup = svg.append("g")
     .style("font-weight", "bold");
 
     chartGroup.append("text")
-    .text("Obesity Rate")
+    .text("Obesity Rate (%)")
     .attr("x", width/2.2)
     .attr("y", height + 36)
     .style("font-weight", "bold");
